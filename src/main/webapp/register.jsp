@@ -7,7 +7,16 @@
 		<jsp:include page="header.jsp"></jsp:include>
 		<link href="css/jquery-ui.css" rel="stylesheet">
 <title id="title">Register</title>
+
 </head>
+<%
+try{
+	if(session.getAttribute("idu")!=null){
+		response.sendRedirect("index.jsp");
+	}
+}catch(Exception e){	
+}
+%>
 <body id="page-top" style="background-color: #1f2833">
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: darkred" id="mainNav">
 			<div class="container">

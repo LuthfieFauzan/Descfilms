@@ -8,6 +8,14 @@
 <%@ page import="jakarta.servlet.annotation.WebServlet" %>
 
 <%
+try{
+	if(session.getAttribute("idu")!=null){
+		response.sendRedirect("index.jsp");
+	}
+}catch(Exception e){	
+}
+%>
+<%
 String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
 Connection connection = null; 
 Class.forName("com.mysql.jdbc.Driver").newInstance(); 
@@ -188,7 +196,7 @@ n="";
 		        	%>		        	
 		        	<form id="tesform" name="movieForm" enctype="multipart/form-data"  class="form-group needs-validation" action="<%if(session.getAttribute("ed")==""|| session.getAttribute("ed")==null){out.print("addservlet");}else{out.print("editservletm");} %>" method="post" novalidate>
 		            	<div class="row">
-		            	<input type="text" name="id" value="<%out.print(session.getAttribute("ed").toString()); %>" style="display: none" >	                	
+		            	<input type="text" name="id" value="<%out.print(session.getAttribute("ed")); %>" style="display: none" >	                	
 		                    <div class="col-md-7 mb-3" ng-class="{ 'has-error' : movieForm.title.$invalid && !movieForm.title.$pristine }">
 		                    	<label for="title">Title</label>
 		                        <input type="text" id="title" value="<%out.println(a);%>" name="title" class="form-control" ng-minlength="1" placeholder="*required" required >

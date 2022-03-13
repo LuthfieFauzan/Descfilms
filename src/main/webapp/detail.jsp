@@ -99,30 +99,50 @@ rs.next();
 		</div>
 		<br/>
 		<div class="container">
+		<form action="review" method="post">
+		<input type="hidden" name="idu" value="<%= session.getAttribute("idu")%>">
+		<input type="hidden" name="idm" value="<%= id%>">
 		<div class="card">
     <div class="row">
-        <div class="col-10">
+        <div class="col-12">
             <div class="comment-box ml-2">
-                <h4>Add a Review</h4>
-                <div class="rating">
-                <select name="rate" id="rate">
-  <option value="volvo">1</option>
-  <option value="saab">2</option>
-  <option value="mercedes">3</option>
-  <option value="audi">4</option>
-    <option value="audi">5</option>
-    <option value="audi">6</option>
-    <option value="audi">7</option>
-    <option value="audi">8</option>
-    <option value="audi">9</option>
-    <option value="audi">10</option>
+                <h4>Write a Review</h4>
+                <div class="rating">Score the movie
+                <select name="rate" id="rate" class="form-select">
+  <option value="1">1</option>
+  <option value="2">2</option>
+  <option value="3">3</option>
+  <option value="4">4</option>
+    <option value="5">5</option>
+    <option value="6">6</option>
+    <option value="7">7</option>
+    <option value="8">8</option>
+    <option value="9">9</option>
+    <option value="10" selected="selected">10</option>
 </select>
                 </div>
-                <div class="comment-area"> <textarea class="form-control" placeholder="what is your Review" rows="4"></textarea> </div>
+                <br/>
+                <div class="comment-area"><textarea class="form-control" name="review" placeholder="what is your Review" rows="4" required="required"></textarea> </div>
                 <div class="comment-btns mt-2">
                     <div class="row">
-                        <div class="col-6">
-                            <div class="Centered"> <button class="btn btn-success send btn-sm">Add review<i class="fa fa-long-arrow-right ml-1"></i></button> </div>
+                        <div class="col-6" style="padding: 12px;">
+                        <%
+						try{
+						if(session.getAttribute("idu")!=null){
+						%>
+						<input type="submit" class="btn btn-success send btn-sm" value="Post your review">
+						<%
+						}else{
+							%>
+							<a href="login.jsp">
+							<button class="btn btn-success send btn-sm" type="button">Login</button>
+							</a>
+							<%
+						}
+						}catch(Exception e){	
+						}
+%>
+                            
                         </div>
                     </div>
                 </div>
@@ -130,11 +150,13 @@ rs.next();
         </div>
     </div>
 </div>
+		</form>
 		</div>
+		<div class="container mt-5">
 		<%rs=stmt.executeQuery("SELECT `review`.*, `user`.`username`FROM review INNER JOIN user ON review.user_id = user.user_id WHERE review.movie_id='"+id+"'"); 
 		while(rs.next()){
 			%>
-			<div class="container mt-5">
+			
     <div class="d-flex justify-content-center row">
         <div class="col-md-12">
             <div class="d-flex flex-column comment-section">
@@ -148,21 +170,39 @@ rs.next();
                     </div>
                    
                     <div class="d-flex flex-column justify-content-start ml-2">
-                        <p><% out.println(rs.getString(3));%></p>
+                        <p class="p-2"><% out.println(rs.getString(3));%></p>
+                    </div>
+                    <div class="d-flex flex-row fs-12">
+                        <div class="like cursor"><%out.println(rs.getString(4));%> Likes  </div>
+                        <%try{
+    						if(session.getAttribute("idu")!=null){
+    							%>
+    							<form action="like.jsp" method="get">
+    							<input type="hidden" name="mid" value="<%=id%>">
+    							<input type="hidden" name="rid" value="<%= rs.getString(1)%>">
+    							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+    							<input type="submit" class="btn btn-success send btn-sm" value="Like">
+    							</form>
+    							
+    							<%
+    							}else{
+    								%>
+    								<a href="login.jsp">
+    								<button class="btn btn-success send btn-sm">Like</button>
+    								</a>
+    								<%
+    							}
+    							}catch(Exception e){	
+    							} %>
                     </div>
                 </div>
-                <div class="bg-white">
-                    <div class="d-flex flex-row fs-12">
-                        <div class="like p-2 cursor"><i class="fa fa-thumbs-o-up"><%out.println(rs.getString(4));%> Likes <button class="btn btn-success">Like<i class="fa fa-long-arrow-right ml-1"></i></div>
-                        
-                    </div>
-                </div>                
+                               
             </div>
         </div>
     </div>
-</div>
+	<br/>
 		<% }%>
-		
+		</div>
 		
 		<br/>
 		<jsp:include page="footer.jsp"></jsp:include>

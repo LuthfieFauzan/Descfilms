@@ -1,3 +1,4 @@
+<%@page import="org.apache.jasper.tagplugins.jstl.core.If"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
     pageEncoding="ISO-8859-1"%>
 <!DOCTYPE html>
@@ -8,6 +9,16 @@
 		<link href="css/jquery-ui.css" rel="stylesheet">
 <title id="title">Login</title>
 </head>
+
+<%
+try{
+	if(session.getAttribute("idu")!=null){
+		response.sendRedirect("index.jsp");
+	}
+}catch(Exception e){	
+}
+%>
+
 
 <body id="page-top" style="background-color: #1f2833">
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: darkred" id="mainNav">
@@ -46,7 +57,17 @@
                             <p for="inputPassword" style="color:red"></p>
                         </div>
                     </div>
-                    <p id="text" value="" style="color: red; text-transform: uppercase; align-content: center"></p>
+                    <p id="text" style="color: red; text-transform: uppercase; align-content: center">
+                    <%
+                    try{
+                    	if(session.getAttribute("val").equals("1")){
+                    		out.print("Wrong Email or Password");
+                    	}
+                    }catch(Exception e){
+                    	
+                    }
+                    %>
+                    </p>
                     <input type="submit" value="Login" class="btn btn-block btn-warning" style="color: white;">                    
                      <br/>
                      <a href="index.jsp">

@@ -11,13 +11,14 @@ Connection connection = null;
 Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 connection = DriverManager.getConnection(connectionURL, "root", "");
 	Statement stmt=connection.createStatement();  
-	ResultSet rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Comedy'"); 
+	String search=request.getParameter("search");
+	ResultSet rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE title REGEXP '"+search+"' OR genre REGEXP '"+search+"' OR year REGEXP '"+search+"' OR language REGEXP '"+search+"'"); 
 	String a=null;
 %>
 
 <head>
 		<jsp:include page="header.jsp"></jsp:include>
-		<title>Home | Descfilm</title>
+		<title>Search | Descfilm</title>
 	</head>
 	<body id="page-top" style="background-image: url('img/test.jpg');" onload="prefent()">
 	
@@ -50,24 +51,21 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 					<input class="form-control" type="text" placeholder="Search movie..." aria-label="Search" id="search" name="search">    
 				</div>    
 				<div class='col-md-2'>
-					<input type="submit" class="btn btn-outline-white btn-block"  style="background-color: orange; color: white;" value="Search">
-					
+					<input type="submit" class="btn btn-outline-white btn-block"  style="background-color: orange; color: white;" value="Search">					
 				</div>
 			</div>
 			</form>
 		</div>
-		<br/><br/>
 		
-		<br/><br/>
-		<section onmouseover="comedy()" id="comedy">
-			<div class="container">
+		<section onmouseover="other()" id="sears">
+	        <div class="container">
 	            <div class="row">
 	                <div class="col-md-8">
-	                    <h2 class="section-heading" style="color: white">Comedy</h2>
+	                    <h2 class="section-heading" style="color: white" id="namasearch">Search <%= search%></h2>
 	                </div>
 	            </div>
-	            <div class="row" id="comedi">
-	           <% while(rs.next()){%>	        	   	        	 		
+	            <div class="row" id="searsi">
+	            <% while(rs.next()){%>	        	   	        	 		
 	            <div class="col-md-4 mb-4 box-item" >
 				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
 	            	<div class="box-hover">
@@ -78,77 +76,17 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
 	            </a>
 	            <div class="portfolio-caption">
-	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
+	            	<h4 style="text-align: center; color: white"><%out.println(rs.getString(2));%></h4>
 	                <p style="text-align: center; color: white"> <%out.println(rs.getString(4));%> </p>
 	            </div>
 	        </div>
-	        <% }
-	        rs.close();%>  
+	       <%} %>
 	            </div>
 			</div>
 		</section>
 		<br/><br/>
-		<section id="adventure" onmouseover="adventure()">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8">
-						<h2 class="section-heading" style="color: white">Adventure</h2>
-					</div>
-				</div>
-				<div class="row" id="aventure">
-				<%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Adventure'");  
-				while(rs.next()){
-				%>	        	   	        	 		
-	            <div class="col-md-4 mb-4 box-item" >
-				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
-	            	<div class="box-hover">
-	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
-	                    </div>
-	                </div>
-	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
-	            </a>
-	            <div class="portfolio-caption">
-	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
-	                <p style="text-align: center; color: white"> <%out.println(rs.getString(4));%> </p>
-	            </div>
-	        </div>
-	        <% }%> 
-				</div>
-			</div>
-		</section>
-		<br/><br/>
-		<section id="action" onmouseover="action()">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8">
-						<h2 class="section-heading" style="color: white">Action</h2>
-					</div>
-				</div>
-				<div class="row" id="acion">
-				<%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Action'");  
-				while(rs.next()){
-				%>	        	   	        	 		
-	            <div class="col-md-4 mb-4 box-item" >
-				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
-	            	<div class="box-hover">
-	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
-	                    </div>
-	                </div>
-	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
-	            </a>
-	            <div class="portfolio-caption">
-	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
-	                <p style="text-align: center; color: white"> <%out.println(rs.getString(4));%> </p>
-	            </div>
-	        </div>
-	        <% }%> 
-				</div>
-			</div>
-		</section>
-		<%rs=stmt.executeQuery("select * from mytable");
-		while(rs.next()){%>
+		<%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE title REGEXP '"+search+"' OR genre REGEXP '"+search+"' OR year REGEXP '"+search+"' OR language REGEXP '"+search+"'"); 
+		while(rs.next()){%>				
 			<div class="modal fade" id="portfolio1Modal<%out.println(rs.getInt(1));%>" tabindex="-1" role="dialog" aria-hidden="true">
         	<div class="modal-dialog modal-dialog-centered" role="document">
             	<div class="modal-content">
@@ -174,8 +112,9 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 				</div>
 	        </div>
 		</div>
-		<% }%>
-		
+		<% }
+		rs.close();
+		%>		
 		<br/><br/>
 		<a id="scroll" style="display: none;"><span></span></a>
 		<jsp:include page="scripts.jsp"></jsp:include>

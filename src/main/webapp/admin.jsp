@@ -152,8 +152,9 @@ n="";
 				        
 				        </form>
 			        		<br/>
-			        		<form action="deletem" method="post">
+			        		<form action="deletem" method="post" onsubmit="return confirm('Are you sure you want to Delete?');">
 				        <input type="hidden" value="<%out.print(rs.getInt(1));%>" name="movie">
+				        
 				        <input type="submit" class="btn btn-danger btn-block" value="Delete">		        
 				        </form>
 			        	</td>

@@ -77,10 +77,10 @@ try{
 							<input id="inputcPassword" name="cpass" class="form-control" label="cPassword" required="true" type="password" redisplay="true"/>
                             <p for="inputcPassword" style="color:red"></p>
                         </div>
+                        <p id="text" value="" style="color: red; text-transform: uppercase; align-content: center"><%if(request.getParameter("error")!=null){out.print("Email already exist");}%></p>
+                    <input type="submit" value="Register" class="btn btn-block btn-info" style="color: white;">        
                     </div>
-                    <p id="text" value="" style="color: red; text-transform: uppercase; align-content: center"></p>
-                    <input type="submit" value="Register" class="btn btn-block btn-info" style="color: white;">                   
-                                       
+                                                
                 </div>
             </div>
         </div>

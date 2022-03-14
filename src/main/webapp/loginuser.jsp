@@ -11,15 +11,15 @@ String user= request.getParameter("name").toString();
 String pass= request.getParameter("pass").toString();
 
 try{
-	rs=st.executeQuery("select count(*) from user where username='"+user+"' OR email='"+user+"' and password='"+pass+"'"); 
+	rs=st.executeQuery("select count(*) from user where email='"+user+"' and password='"+pass+"'"); 
 }catch(Exception e){
 	session.setAttribute("val", "1");
 	response.sendRedirect("login.jsp");	
 }
 rs.next();
-if(rs.getString(1).equals("1")){	
+if(!rs.getString(1).equals("0")){	
 	try{
-		rs=st.executeQuery("select * from user where username='"+user+"' OR email='"+user+"' and password='"+pass+"'"); 
+		rs=st.executeQuery("select * from user where email='"+user+"' and password='"+pass+"'"); 
 		while(rs.next()){
 	    if(rs.getString(2).equals(user)||rs.getString(4).equals(user)&&rs.getString(3).equals(pass)) 
 		{	session.setAttribute("idu", rs.getString(1));

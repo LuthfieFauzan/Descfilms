@@ -45,7 +45,7 @@ try{
                 <div class="card-body">
 					<div class="form-group">
 						<div class="form-group">
-							Email / Username
+							Email
 							<input id="inputEmails" name="name" class="form-control" label="Email" required="true"/>
 							<p for="inputEmail" style="color:red"></p>
                         </div>
@@ -63,9 +63,11 @@ try{
                     	if(session.getAttribute("val").equals("1")){
                     		out.print("Wrong Email or Password");
                     	}
+                    	
                     }catch(Exception e){
                     	
                     }
+                    if(request.getParameter("sucess")!=null){out.print("Register sucess");}	
                     %>
                     </p>
                     <input type="submit" value="Login" class="btn btn-block btn-warning" style="color: white;">                    

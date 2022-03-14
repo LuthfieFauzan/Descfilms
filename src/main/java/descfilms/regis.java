@@ -37,9 +37,11 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws S
 		pstmt.setString(4, gender);
 		pstmt.setString(5, dob);
 		pstmt.executeUpdate();
-		getServletContext().getRequestDispatcher("/login.jsp").forward(req, resp);
+		getServletContext().setAttribute("error", null);
+		getServletContext().getRequestDispatcher("/login.jsp?sucess=1").forward(req, resp);
 	} catch (SQLException e1) {
 		// TODO Auto-generated catch block
+		getServletContext().getRequestDispatcher("/register.jsp?error=1").forward(req, resp);		
 		System.out.print(e1);
 	}finally {
 		if(con !=null) {

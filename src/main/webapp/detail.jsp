@@ -27,7 +27,7 @@ rs.next();
 		<div class="container">
 			<table class="table table-responsive table-borderless table-sm" style="color: white;" id="tabel">
 			 <tr>
-			    	<td rowspan="12" style="vertical-align: middle"><img src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="300px"></td>
+			    	<td rowspan="10" style="vertical-align: middle"><img src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="300px"></td>
 			    	<td class="text-uppercase"><h2><%out.println(rs.getString(2));%></h2></td>
 			    	<td class="text-uppercase"style="text-align: center;" ><h2>Score:  <%out.println(rs.getString(17));%></h2></td>
 			    	
@@ -68,6 +68,31 @@ rs.next();
 			        <td>: <%out.println(rs.getString(11));%></td>
 				</tr>
 				<tr>
+				<td>
+				
+				<%
+						try{
+						if(session.getAttribute("idu")!=null){
+						%>
+						<form action="favorite.jsp" method="post">
+    							<input type="hidden" name="mid" value="<%=id%>">    							
+    							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+    							<input type="submit" class="btn btn-block btn-dark rounded-1" style="background-color: pink; color: white;" value="Add to favorite">
+    							</form>
+						<%
+						}else{
+							%>
+							<a href="login.jsp">
+							<button class="btn btn-success send btn-sm" style="background-color: orange; color: white;" type="button">Add to favorite</button>
+							</a>
+							<%
+						}
+						}catch(Exception e){	
+						}
+%>
+				
+				</td>
+				
 					<td><h5>Casts</h5></td>
 					<td>: <%out.println(rs.getString(12));%></td>
 				</tr>

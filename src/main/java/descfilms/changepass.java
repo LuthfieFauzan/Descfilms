@@ -19,7 +19,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.Part;
 
 
-@WebServlet("/editservletu")
+@WebServlet("/changepass")
 public class changepass extends HttpServlet{
 String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
 

@@ -6,18 +6,28 @@
 <%
 int id= Integer.parseInt(request.getParameter("id"));
 Connection con = null;
+int fav=0;
 ResultSet rs = null;
 String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
 Connection connection = null; 
 Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 connection = DriverManager.getConnection(connectionURL, "root", "");
 	Statement stmt=connection.createStatement();  
+	Statement st=connection.createStatement();
+	ResultSet favcheck=stmt.executeQuery("SELECT COUNT(*) FROM `favourite` WHERE `movie_id` ="+id +" AND `user_id` ="+ session.getAttribute("idu"));
+	favcheck.next();
+	fav=favcheck.getInt(1);
+	ResultSet likeset=null;
 rs = stmt.executeQuery("select * from mytable where id="+id);
 rs.next();
 %>
+
+
 <!DOCTYPE html>
 <html lang="en">
 	<head>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+	
 		<jsp:include page="header.jsp"></jsp:include>
         <title id="title"><%out.println(rs.getString(2));%>Descfilm</title>
 	</head>
@@ -73,17 +83,28 @@ rs.next();
 				<%
 						try{
 						if(session.getAttribute("idu")!=null){
-						%>
-						<form action="favorite.jsp" method="post">
+							if(fav==1){%>
+								<form action="remove.jsp?no=1" method="post">
     							<input type="hidden" name="mid" value="<%=id%>">    							
     							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
-    							<input type="submit" class="btn btn-block btn-dark rounded-1" style="background-color: pink; color: white;" value="Add to favorite">
+    							<button class="btn btn-block btn-dark rounded-1" style="background-color: red; color: white;" type="submit">remove favorite <i class="fa fa-heart"></i></button>
     							</form>
+							<%}else{%>
+							<form action="favorite.jsp" method="post">
+							<input type="hidden" name="mid" value="<%=id%>">    							
+							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+							<button class="btn btn-block btn-dark rounded-1" style="background-color: red; color: white;" type="submit">Add to favorite <i class="fa fa-heart-o"></i></button>
+							</form>
+						<%
+								
+							}
+						%>
+						
 						<%
 						}else{
 							%>
 							<a href="login.jsp">
-							<button class="btn btn-success send btn-sm" style="background-color: orange; color: white;" type="button">Add to favorite</button>
+							<button class="btn btn-block btn-dark rounded-1" style="background-color: red; color: white;" type="button">Add to favorite <i class="fa fa-heart-o"></i></button>
 							</a>
 							<%
 						}
@@ -178,7 +199,9 @@ rs.next();
 		</form>
 		</div>
 		<div class="container mt-5">
-		<%rs=stmt.executeQuery("SELECT `review`.*, `user`.`username`FROM review INNER JOIN user ON review.user_id = user.user_id WHERE review.movie_id='"+id+"'"); 
+		<%
+		
+		rs=stmt.executeQuery("SELECT `review`.*, `user`.`username`, `user`.`title`FROM review INNER JOIN user ON review.user_id = user.user_id WHERE review.movie_id='"+id+"'"); 
 		while(rs.next()){
 			%>
 			
@@ -189,7 +212,7 @@ rs.next();
                     <div class="d-flex flex-row user-info">
                     <img class="rounded-circle" src="getimguser.jsp?your_id=<%out.println(rs.getInt(6));%>" onerror="this.onerror=null; this.src='img/movie.png'" width="40">
                         <div class="d-flex flex-column justify-content-start ml-2">
-                        <span class="d-block font-weight-bold name"><% out.println(rs.getString(7));%></span>
+                        <span class="d-block font-weight-bold name"><% out.println(rs.getString(7));%><i class="fa fa-angle-double-right" style="color: black;font-size:26px"></i>&nbsp;&nbsp;<% out.println(rs.getString(8));%> </span>
                         <span class="d-block font-weight-bold name">Rates: <% out.println(rs.getString(2));%> </span>
                         </div>                     
                     </div>
@@ -198,28 +221,63 @@ rs.next();
                         <p class="p-2"><% out.println(rs.getString(3));%></p>
                     </div>
                     <div class="d-flex flex-row fs-12">
-                        <div class="like cursor"><%out.println(rs.getString(4));%> Likes  </div>
+                        <div class="like cursor"><%out.println(rs.getString(4));%> Likes &nbsp;</div>
                         <%try{
+                        	
     						if(session.getAttribute("idu")!=null){
-    							%>
-    							<form action="like.jsp" method="get">
-    							<input type="hidden" name="mid" value="<%=id%>">
-    							<input type="hidden" name="rid" value="<%= rs.getString(1)%>">
-    							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
-    							<input type="submit" class="btn btn-success send btn-sm" value="Like">
-    							</form>
     							
-    							<%
+    							likeset =st.executeQuery("SELECT COUNT(*) FROM `like` WHERE `review_id` ="+rs.getString(1) +" AND `user_id` ="+ session.getAttribute("idu"));
+    							likeset.next();
+    							int like=likeset.getInt(1);
+    							if(like==1){
+    								%>
+        							<form action="remove.jsp?no=2" method="post">
+        							<input type="hidden" name="mid" value="<%=id%>">
+        							<input type="hidden" name="rid" value="<%= rs.getString(1)%>">
+        							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+        							<button type="submit" style="border: none;background: none"><i class="fa fa-heart" style="color: red"></i></button>
+        						 
+        							
+        							</form>
+        							
+        							<%	
+    							}else{
+    								%>
+        							<form action="like.jsp" method="get">
+        							<input type="hidden" name="mid" value="<%=id%>">
+        							<input type="hidden" name="rid" value="<%= rs.getString(1)%>">
+        							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+        							<button type="submit" style="border: none;background: none"><i class="fa fa-heart-o" style="border: thick;"></i></button>
+        						 
+        							
+        							</form>
+        							
+        							<%
+    							}
     							}else{
     								%>
     								<a href="login.jsp">
-    								<button class="btn btn-success send btn-sm">Like</button>
+    								<button type="button" style="border: none;background: none"><i class="fa fa-heart-o" style="border: thick;"></i></button>
     								</a>
     								<%
     							}
     							}catch(Exception e){	
     							} %>
                     </div>
+                    <%
+                    if(rs.getString(6).equals(session.getAttribute("idu"))){
+                    	%>
+                    	<div class="d-flex flex-row fs-12">
+                        <form action="remove.jsp?no=3" method="post">
+        							<input type="hidden" name="mid" value="<%=id%>">
+        							<input type="hidden" name="rid" value="<%= rs.getString(1)%>">
+        							<input type="hidden" name="uid" value="<%=session.getAttribute("idu")%>">
+        							<button type="submit" style="border: none;background: none"><i class="fa fa-trash" style="border: thick;"></i>&nbsp;Delete</button>      					        							
+        							</form>
+                    </div>
+                    	
+                    <%}
+                    %>
                 </div>
                                
             </div>

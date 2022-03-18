@@ -2,14 +2,14 @@
 <%@ page import="java.io.*"%>
 <% 
 Blob image = null;
-Connection con = null;
+Connection connection = null; 
 byte[ ] imgData = null ;
 int id= Integer.parseInt(request.getParameter("your_id"));
 ResultSet rs = null;
 try {
 
 	String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
-	Connection connection = null; 
+	
 	Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 	connection = DriverManager.getConnection(connectionURL, "root", "");
 		Statement stmt=connection.createStatement();  
@@ -34,11 +34,11 @@ try {
     try {
     rs.close();
 
-    con.close();
+    connection.close();
     
     } catch (SQLException e) {
     
-    e.printStackTrace();
+    
     
     }
 

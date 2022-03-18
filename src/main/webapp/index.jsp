@@ -1,3 +1,4 @@
+<%@page import="java.util.ArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" 
 	pageEncoding="UTF-8" %>
 	
@@ -11,8 +12,13 @@ Connection connection = null;
 Class.forName("com.mysql.jdbc.Driver").newInstance(); 
 connection = DriverManager.getConnection(connectionURL, "root", "");
 	Statement stmt=connection.createStatement();  
-	ResultSet rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Comedy'"); 
+	ResultSet rs=null;
 	String a=null;
+	ArrayList<String> aray = new ArrayList<String>();
+	ResultSet set= stmt.executeQuery("SELECT DISTINCT `genre` FROM `mytable` ORDER BY genre ASC");
+	while(set.next()){	
+		aray.add(set.getString(1));
+	}
 %>
 
 <head>
@@ -57,17 +63,19 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 			</form>
 		</div>
 		<br/><br/>
-		
-		<br/><br/>
-		<section onmouseover="comedy()" id="comedy">
+			
+		<%for(int ar=0;ar<aray.size();ar++){
+		%>	
+		<section onmouseover="<%=aray.get(ar).toLowerCase()%>()" id="<%=aray.get(ar).toLowerCase()%>">
 			<div class="container">
 	            <div class="row">
 	                <div class="col-md-8">
-	                    <h2 class="section-heading" style="color: white">Comedy</h2>
+	                    <h2 class="section-heading" style="color: white"><%=aray.get(ar)%></h2>
 	                </div>
 	            </div>
 	            <div class="row" id="comedi">
-	           <% while(rs.next()){%>	        	   	        	 		
+	           <%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='"+aray.get(ar)+"' ORDER BY title ASC");  
+	           while(rs.next()){%>	        	   	        	 		
 	            <div class="col-md-4 mb-4 box-item" >
 				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
 	            	<div class="box-hover">
@@ -88,65 +96,12 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 			</div>
 		</section>
 		<br/><br/>
-		<section id="adventure" onmouseover="adventure()">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8">
-						<h2 class="section-heading" style="color: white">Adventure</h2>
-					</div>
-				</div>
-				<div class="row" id="aventure">
-				<%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Adventure'");  
-				while(rs.next()){
-				%>	        	   	        	 		
-	            <div class="col-md-4 mb-4 box-item" >
-				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
-	            	<div class="box-hover">
-	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
-	                    </div>
-	                </div>
-	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
-	            </a>
-	            <div class="portfolio-caption">
-	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
-	                <p style="text-align: center; color: white"> <%out.println(rs.getString(4));%> </p>
-	            </div>
-	        </div>
-	        <% }%> 
-				</div>
-			</div>
-		</section>
-		<br/><br/>
-		<section id="action" onmouseover="action()">
-			<div class="container">
-				<div class="row">
-					<div class="col-md-8">
-						<h2 class="section-heading" style="color: white">Action</h2>
-					</div>
-				</div>
-				<div class="row" id="acion">
-				<%rs=stmt.executeQuery("SELECT * FROM `mytable` WHERE genre='Action'");  
-				while(rs.next()){
-				%>	        	   	        	 		
-	            <div class="col-md-4 mb-4 box-item" >
-				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
-	            	<div class="box-hover">
-	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
-	                    </div>
-	                </div>
-	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
-	            </a>
-	            <div class="portfolio-caption">
-	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
-	                <p style="text-align: center; color: white"> <%out.println(rs.getString(4));%> </p>
-	            </div>
-	        </div>
-	        <% }%> 
-				</div>
-			</div>
-		</section>
+		
+		<%}
+		%>
+		
+		
+		
 		<%rs=stmt.executeQuery("select * from mytable");
 		while(rs.next()){%>
 			<div class="modal fade" id="portfolio1Modal<%out.println(rs.getInt(1));%>" tabindex="-1" role="dialog" aria-hidden="true">

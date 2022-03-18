@@ -1,3 +1,5 @@
+	<%@ page import="java.sql.*" %> 
+<%@ page import="java.io.*" %> 
 <nav class="navbar navbar-expand-lg navbar-dark fixed-top" style="background-color: darkred" id="mainNav">
 	<div class="container">
 		<a class="navbar-brand js-scroll-trigger" href="index.jsp" style="color: white;">Descfilm</a>
@@ -12,15 +14,18 @@
 							<li>
 								<div>
 									<ul style="list-style-type: none; padding: 0px;">
-		                            	<li class="nav-item">
-		                                	<a class="nav-link js-scroll-trigger" onclick="comedy()" href="index.jsp#comedy">Comedy</a>
-		                                </li>
-		                                <li class="nav-item">
-		                                	<a class="nav-link js-scroll-trigger" onclick="adventure()" href="index.jsp#adventure">Adventure</a>
-										</li>
-				                        <li class="nav-item">
-				                        	<a class="nav-link js-scroll-trigger" onclick="action()" href="index.jsp#action">Action</a>
-				                        </li>
+									<%String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
+									Connection connection = null; 
+									Class.forName("com.mysql.jdbc.Driver").newInstance(); 
+									connection = DriverManager.getConnection(connectionURL, "root", "");
+										Statement stmt=connection.createStatement(); 
+										ResultSet set= stmt.executeQuery("SELECT DISTINCT `genre` FROM `mytable` ORDER BY genre ASC");
+										while(set.next()){%>	
+										<li class="nav-item">
+		                                	<a class="nav-link js-scroll-trigger" onclick="<%=set.getString(1).toLowerCase()%>()" href="index.jsp#<%=set.getString(1).toLowerCase()%>"><%=set.getString(1)%></a>
+										</li>	
+										<%}%>
+																                               
 		                            </ul>
 								</div>
 							</li>

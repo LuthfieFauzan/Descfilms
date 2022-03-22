@@ -41,7 +41,7 @@ String connectionURL = "jdbc:mysql://localhost:3306/descfilm";
 		k=request.getParameter("synopsisline1");
 		l=request.getParameter("synopsisline2");
 		m=request.getParameter("videourl");
-		String img=request.getParameter("a");
+		int img=Integer.parseInt(request.getParameter("a"));
 		InputStream is=null;
 		PreparedStatement pstmt = null; 
 		Part file =request.getPart("files");
@@ -50,7 +50,7 @@ String connectionURL = "jdbc:mysql://localhost:3306/descfilm";
 		try {
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			con= DriverManager.getConnection(connectionURL, "root", "");
-			if(img=="1") {
+			if(img==1) {
 				pstmt = con.prepareStatement("UPDATE `mytable` SET `id`=?,`title`=?,`img`=?,`genre`=?,`language`=?,`runtime`=?,`producer`=?,`director`=?,`distributor`=?,`year`=?,`rating`=?,`casts`=?,`synopsisshort`=?,`synopsisline1`=?,`synopsisline2`=?,`videourl`=? WHERE id="+id);
 				pstmt.setInt(1, id);
 				pstmt.setString(2, a);	

@@ -18,29 +18,31 @@ import jakarta.servlet.http.Part;
 
 
 @WebServlet("/editservletu")
-@MultipartConfig(maxFileSize = 16177215)
+@MultipartConfig(maxFileSize = 160177215)
 public class editprofile extends HttpServlet{
 String connectionURL = "jdbc:mysql://localhost:3306/descfilm"; 
 
 	
 	@Override
 	protected void doPost(HttpServletRequest request, HttpServletResponse resp) throws ServletException, IOException {
-		int id=Integer.parseInt(request.getParameter("id"));		
-		String email,name,gender,dob,desc;		
+		int id=Integer.parseInt(request.getParameter("id"));	
+		String name,gender,dob,desc;		
 		name=request.getParameter("name");
 		gender=request.getParameter("gender");
 		dob=request.getParameter("date");
-		desc=request.getParameter("pass");
-		String img=request.getParameter("a");
+		desc=request.getParameter("description");		
+		int img=Integer.parseInt(request.getParameter("a"));	
 		InputStream is=null;
-		PreparedStatement pstmt = null; 
-		Part file =request.getPart("files");
+		PreparedStatement pstmt = null; 		
+		Part file =request.getPart("file");
 		is = file.getInputStream();
+		
 		Connection con=null;
-		try {
+		try {			
 			DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 			con= DriverManager.getConnection(connectionURL, "root", "");
-			if(img=="1") {
+			System.out.print(img);
+			if(img==1) {
 				pstmt = con.prepareStatement("UPDATE `user` SET `user_id`=?,`username`=?,`gender`=?,`date_of_birth`=?,`img`=?,`desc`=? WHERE `user_id`="+id);
 				pstmt.setInt(1, id);
 				pstmt.setString(2, name);
@@ -48,7 +50,8 @@ String connectionURL = "jdbc:mysql://localhost:3306/descfilm";
 				pstmt.setString(4, dob);
 				pstmt.setBlob(5, is);	
 				pstmt.setString(6, desc);
-				pstmt.executeUpdate();			
+				pstmt.executeUpdate();
+				getServletContext().getRequestDispatcher("/myprofile.jsp").forward(request, resp);
 			}else {
 				pstmt = con.prepareStatement("UPDATE `user` SET `user_id`=?,`username`=?,`gender`=?,`date_of_birth`=?,`desc`=? WHERE `user_id`="+id);
 				pstmt.setInt(1, id);
@@ -56,9 +59,10 @@ String connectionURL = "jdbc:mysql://localhost:3306/descfilm";
 				pstmt.setString(3, gender);
 				pstmt.setString(4, dob);				
 				pstmt.setString(5, desc);
-				pstmt.executeUpdate();	
+				pstmt.executeUpdate();
+				getServletContext().getRequestDispatcher("/myprofile.jsp").forward(request, resp);
 			}			
-			getServletContext().getRequestDispatcher("/edit.jsp").forward(request, resp);
+			
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block
 			System.out.print(e1);

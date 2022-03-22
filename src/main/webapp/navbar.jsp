@@ -49,7 +49,7 @@
 								<div>
 									<ul style="list-style-type: none; padding: 0px;">
 		                            	<li class="nav-item">
-		                                	<a class="nav-link" href="">My profile</a>
+		                                	<a class="nav-link" href="myprofile.jsp">My profile</a>
 		                                </li>	                               
 				                        <li class="nav-item">
 				                        	<a class="nav-link" href="logout.jsp">Logout</a>

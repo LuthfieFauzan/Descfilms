@@ -70,7 +70,7 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
 	            	<div class="box-hover">
 	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
+	                    	<p style="text-align: center; color: white"> <%out.println(rs.getString(17));%> <i class="fa fa-star" aria-hidden="true"></i> </p>
 	                    </div>
 	                </div>
 	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">

@@ -30,12 +30,13 @@ protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws S
 	try {
 		DriverManager.registerDriver(new com.mysql.jdbc.Driver());
 		con= DriverManager.getConnection(connectionURL, "root", "");
-		pstmt = con.prepareStatement("INSERT INTO `user`(`user_id`, `email`, `password`, `username`, `gender`, `date_of_birth`, `img`, `desc`, `title`, `Exp`)"+"VALUES(NULL,?,?,?,?,?,NULL,NULL,NULL,0)");
+		pstmt = con.prepareStatement("INSERT INTO `user`(`user_id`, `email`, `password`, `username`, `gender`, `date_of_birth`, `img`, `desc`, `title`, `Exp`)"+"VALUES(NULL,?,?,?,?,?,NULL,?,NULL,0)");
 		pstmt.setString(1, email);
 		pstmt.setString(2, password);
 		pstmt.setString(3, name);
 		pstmt.setString(4, gender);
 		pstmt.setString(5, dob);
+		pstmt.setString(6, "");
 		pstmt.executeUpdate();
 		getServletContext().setAttribute("error", null);
 		getServletContext().getRequestDispatcher("/login.jsp?sucess=1").forward(req, resp);

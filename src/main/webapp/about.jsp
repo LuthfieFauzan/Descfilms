@@ -9,18 +9,7 @@
     <body onload="prefent()" id="page-top" style="background-color: #1f2833" ng-app="validationApp" ng-controller="mainController">
         <jsp:include page="navbar.jsp"></jsp:include>
         <br/><br/><br/>
-        <div class="slideshow-container" id="home">
-            <img class="mySlides" src="img/a.jpg" style="width:100%">
-            <img class="mySlides" src="img/b.jpg" style="width:100%">
-            <img class="mySlides" src="img/c.jpg" style="width:100%">
-            <a class="prev" onclick="plusSlides(-1)">&#10094;</a>
-            <a class="next" onclick="plusSlides(1)">&#10095;</a>
-            <div style="text-align:center">
-                <span class="dot" onclick="currentSlide(1)"></span> 
-                <span class="dot" onclick="currentSlide(2)"></span>
-                <span class="dot" onclick="currentSlide(3)"></span>
-            </div>
-        </div>
+       
         <br/><br/><br/>
         <div class="container">
             <h1 class="text-center" style="color: white;"><b>About Descfilm</b></h1>

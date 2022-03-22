@@ -15,7 +15,7 @@ try {
 	pstmt.setInt(1, rid);
 	pstmt.setInt(2, uid);
 	pstmt.executeUpdate();
-	response.sendRedirect("detail.jsp?id="+mid);
+	response.sendRedirect("detail.jsp?id="+mid+"#review"+rid);
 
 } catch (Exception e) {
        out.print(e);

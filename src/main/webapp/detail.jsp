@@ -37,10 +37,9 @@ rs.next();
 		<div class="container">
 			<table class="table table-responsive table-borderless table-sm" style="color: white;" id="tabel">
 			 <tr>
-			    	<td rowspan="10" style="vertical-align: middle"><img src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="300px"></td>
+			    	<td rowspan="10" style="vertical-align: middle"><img src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" onerror="this.onerror=null; this.src='img/cover.jpg'" width="300px"></td>
 			    	<td class="text-uppercase"><h2><%out.println(rs.getString(2));%></h2></td>
-			    	<td class="text-uppercase"style="text-align: center;" ><h2>Score:  <%out.println(rs.getString(17));%></h2></td>
-			    	
+			    	<td class="text-uppercase"style="text-align: center;" ><h2>Score:  <%out.println(rs.getString(17));%> <i class="fa fa-star" aria-hidden="true"></i></h2></td>			    	
 				</tr>
 			    <tr>
 					<td colspan="2"><%out.println(rs.getString(13));%></td>
@@ -125,15 +124,22 @@ rs.next();
 				<button id="btn" class="btn btn-block btn-dark rounded-1" style="display: none; background-color: orange; color: white;">Close trailer video</button>
 				<div id="panel">
 					<div class="video-container" id="yutub">
-					<iframe src="<%out.println(rs.getString(16));%>" frameborder="0" allowfullscreen></iframe>
-					</div>
+					<%
+                    	if(rs.getString(16).matches("(.*).com(.*)")){
+                    		%>	
+                    		<iframe width="853" height="480" src="<% out.println(rs.getString(16));%>"  frameborder="0" allowfullscreen></iframe>                        	
+                    	<%}else{
+                    		%>	
+                    		<iframe width="853" height="480" src="https://www.youtube.com/embed/JfVOs4VSpmA" frameborder="0" allowfullscreen></iframe>                        	                    		
+                    		<%}
+                    	%></div>
 				</div>
 			</div>
 		</div>
 		<br/><br/>
 		<div class="container" style="color: white;">
 			<h4>Synopsis</h4><hr/>
-			<div style="background-color: #0f0f0f;padding: 20px">
+			<div style="background-color: #0f0f0f;padding: 20px;border-radius: 10px ">
 			<p style="text-align: justify" id="line1">
 			<%out.println(rs.getString(14));%>
 			</p>
@@ -144,7 +150,7 @@ rs.next();
 			
 		</div>
 		<br/>
-		<div class="container">
+		<div class="container" id="review">
 		<form action="review" method="post">
 		<input type="hidden" name="idu" value="<%= session.getAttribute("idu")%>">
 		<input type="hidden" name="idm" value="<%= id%>">
@@ -153,18 +159,18 @@ rs.next();
         <div class="col-12">
             <div class="comment-box ml-2">
                 <h4>Write a Review</h4>
-                <div class="rating">Score the movie
+                <div class="rating">Score the movie :
                 <select name="rate" id="rate" class="form-select">
-  <option value="1">1</option>
-  <option value="2">2</option>
-  <option value="3">3</option>
-  <option value="4">4</option>
-    <option value="5">5</option>
+  <option value="10" selected="selected">10</option>
+  <option value="9">9</option>
+  <option value="8">8</option>
+  <option value="7">7</option>
     <option value="6">6</option>
-    <option value="7">7</option>
-    <option value="8">8</option>
-    <option value="9">9</option>
-    <option value="10" selected="selected">10</option>
+    <option value="5">5</option>
+    <option value="4">4</option>
+    <option value="3">3</option>
+    <option value="2">2</option>
+    <option value="1">1</option>
 </select>
                 </div>
                 <br/>
@@ -199,30 +205,38 @@ rs.next();
 		</form>
 		</div>
 		<div class="container mt-5">
+		<div class="card">
 		<%
 		
 		rs=stmt.executeQuery("SELECT `review`.*, `user`.`username`, `user`.`title`FROM review INNER JOIN user ON review.user_id = user.user_id WHERE review.movie_id='"+id+"'"); 
 		while(rs.next()){
 			%>
 			
-    <div class="d-flex justify-content-center row">
+    <div class="d-flex justify-content-center row" id="review<%=rs.getInt(1)%>">
         <div class="col-md-12">
             <div class="d-flex flex-column comment-section">
-                <div class="bg-white p-2">
+                <div class="p-2" style="border-bottom: double;" >
                     <div class="d-flex flex-row user-info">
-                    <img class="rounded-circle" src="getimguser.jsp?your_id=<%out.println(rs.getInt(6));%>" onerror="this.onerror=null; this.src='img/movie.png'" width="40">
+                    <form action="myprofile.jsp" method="post">
+                    <input type="hidden" value="<%=rs.getInt(6) %>" name="other">
+                    <button type="submit" style="border: none;background: none">
+                    <img class="rounded-circle" src="getimguser.jsp?your_id=<%out.println(rs.getInt(6));%>" onerror="this.onerror=null; this.src='img/profile.png'" width="50">
+                    </button>
+                    </form>
+                    
                         <div class="d-flex flex-column justify-content-start ml-2">
                         <span class="d-block font-weight-bold name"><% out.println(rs.getString(7));%><i class="fa fa-angle-double-right" style="color: black;font-size:26px"></i>&nbsp;&nbsp;<% out.println(rs.getString(8));%> </span>
-                        <span class="d-block font-weight-bold name">Rates: <% out.println(rs.getString(2));%> </span>
+                        <span class="d-block font-weight-bold name">Rates: <% out.println(rs.getString(2));%> <i class="fa fa-star" aria-hidden="true"></i></span>
                         </div>                     
                     </div>
-                   
-                    <div class="d-flex flex-column justify-content-start ml-2">
+                   <br/>
+                    <div class="d-flex flex-column justify-content-start ml-2"  >
                         <p class="p-2"><% out.println(rs.getString(3));%></p>
                     </div>
                     <div class="d-flex flex-row fs-12">
-                        <div class="like cursor"><%out.println(rs.getString(4));%> Likes &nbsp;</div>
-                        <%try{
+                        <div class="like cursor"><%out.println(rs.getString(4));%> Like &nbsp;</div>
+                        <% 
+                        try{
                         	
     						if(session.getAttribute("idu")!=null){
     							
@@ -283,8 +297,9 @@ rs.next();
             </div>
         </div>
     </div>
-	<br/>
+	
 		<% }%>
+		</div>
 		</div>
 		
 		<br/>

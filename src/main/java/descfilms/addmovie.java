@@ -36,6 +36,7 @@ public class addmovie extends HttpServlet {
 		m=request.getParameter("videourl");
 		InputStream is=null;
 		PreparedStatement pstmt = null; 
+		
 		Part file =request.getPart("files");
 		is = file.getInputStream();
 		Connection con=null;

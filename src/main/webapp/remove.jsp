@@ -20,14 +20,17 @@ try {
 	if(check==1){
 		pstmt = connection.prepareStatement("DELETE FROM `favourite` WHERE `movie_id` ="+mid +" AND `user_id` ="+uid);
 		pstmt.executeUpdate();
+		response.sendRedirect("detail.jsp?id="+mid);
 	}else if(check==2){
 		pstmt = connection.prepareStatement("DELETE FROM `like` WHERE `review_id` ="+rid +" AND `user_id` ="+uid);
 		pstmt.executeUpdate();
+		response.sendRedirect("detail.jsp?id="+mid+"#review"+rid);
 	}else if(check==3){
 		pstmt = connection.prepareStatement("DELETE FROM `review` WHERE `review_id` ="+rid +" AND `user_id` ="+uid);
 		pstmt.executeUpdate();
+		response.sendRedirect("detail.jsp?id="+mid+"#review");
 	}
-	response.sendRedirect("detail.jsp?id="+mid);
+	
 
 } catch (Exception e) {
        System.out.print(e);

@@ -24,6 +24,7 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 <head>
 		<jsp:include page="header.jsp"></jsp:include>
 		<title>Home | Descfilm</title>
+		<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 	</head>
 	<body id="page-top" style="background-image: url('img/test.jpg');" onload="prefent()">
 	
@@ -56,8 +57,7 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 					<input class="form-control" type="text" placeholder="Search movie..." aria-label="Search" id="search" name="search">    
 				</div>    
 				<div class='col-md-2'>
-					<input type="submit" class="btn btn-outline-white btn-block"  style="background-color: orange; color: white;" value="Search">
-					
+					<input type="submit" class="btn btn-outline-white btn-block"  style="background-color: orange; color: white;" value="Search">					
 				</div>
 			</div>
 			</form>
@@ -80,10 +80,10 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 				<a class="box-link" data-toggle="modal" href="#portfolio1Modal<%out.println(rs.getInt(1));%>">
 	            	<div class="box-hover">
 	                	<div class="portfolio-hover-content">
-	                    	<i class="fa fa-plus fa-3x"></i>
+	                    	<p style="text-align: center; color: white"> <%out.println(rs.getString(17));%> <i class="fa fa-star" aria-hidden="true"></i> </p>
 	                    </div>
 	                </div>
-	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" width="640px" height="426px">
+	                <img class="img-fluid" src="getImageDetails.jsp?your_id=<%out.println(rs.getInt(1));%>" onerror="this.onerror=null; this.src='img/cover.jpg'" width="640px" height="426px">
 	            </a>
 	            <div class="portfolio-caption">
 	            	<h4 style="text-align: center; color: white"><% out.println(rs.getString(2));%></h4>
@@ -104,7 +104,7 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 		
 		<%rs=stmt.executeQuery("select * from mytable");
 		while(rs.next()){%>
-			<div class="modal fade" id="portfolio1Modal<%out.println(rs.getInt(1));%>" tabindex="-1" role="dialog" aria-hidden="true">
+			<div class="modal fade" id="portfolio1Modal<%out.println(rs.getInt(1));%>"  tabindex="-1" role="dialog" aria-hidden="true">
         	<div class="modal-dialog modal-dialog-centered" role="document">
             	<div class="modal-content">
                 	<div class="modal-header">
@@ -115,7 +115,15 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 					</div>
 					<div class="modal-body">
                     	<div class="video-container">
-                        	<iframe width="853" height="480" src="<% out.println(rs.getString(16));%>" frameborder="0" donotallowfullscreen></iframe>
+                    	<%
+                    	if(rs.getString(16).matches("(.*).com(.*)")){
+                    		%>	
+                    		<iframe width="853" height="480" src="<% out.println(rs.getString(16));%>"  frameborder="0" donotallowfullscreen></iframe>                        	
+                    	<%}else{
+                    		%>	
+                    		<iframe width="853" height="480" src="https://www.youtube.com/embed/JfVOs4VSpmA" frameborder="0" donotallowfullscreen></iframe>                        	                    		
+                    		<%}
+                    	%>
                         </div>
                         <p style="text-align: justify;"><% out.println(rs.getString(13));%></p>
                         <div class="text-center">
@@ -135,8 +143,19 @@ connection = DriverManager.getConnection(connectionURL, "root", "");
 		<a id="scroll" style="display: none;"><span></span></a>
 		<jsp:include page="scripts.jsp"></jsp:include>
 		<script src="js/slideshow.js"></script>
-		<script src="js/indexscript.js"></script>
+		
 		<script src="js/prefent.js"></script>
+		<script type="text/javascript">
+		<%
+		for(int ar=0;ar<aray.size();ar++){
+			
+			%>
+			function <%= aray.get(ar).toLowerCase()%>(){
+			    document.getElementById("genre").innerHTML = <%out.print("'"+aray.get(ar)+"'");%>;
+			}			
+		<%}
+		%>
+		</script>
 		
 	</body>
 

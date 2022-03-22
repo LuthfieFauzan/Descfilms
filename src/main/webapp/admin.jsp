@@ -244,13 +244,16 @@ n="";
 							</div>
 		                    <div class="col-md-2 mb-3" ng-class="{ 'has-error' : movieForm.rating.$invalid && !movieForm.rating.$pristine }">
 		                    	<label for="rating">Rating</label>
-								<select class="custom-select d-block w-100" id="rating" name="rating" class="form-control" ng-model="movie.rating" required>
-	                                <option value="" selected>Rating...</option>
+								<select class="custom-select d-block w-100" id="rating" name="rating" class="form-control" required>
+	                                <option value="">Rating...</option>
 	                                <option value="E">E</option>
 	                                <option value="PG">PG</option>
 	                                <option value="PG-13">PG-13</option>
 	                                <option value="R">R</option>
 	                            </select>
+	                            <script type="text/javascript">
+	                            document.getElementById("rating").value = <%out.print("'"+i+"'"); %>;
+	                            </script>
 								<p ng-show="movieForm.rating.$invalid && !movieForm.rating.$pristine" class="help-block" style="color: orange">Rating required.</p>
 							</div>
 						</div>

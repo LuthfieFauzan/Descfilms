@@ -42,12 +42,13 @@ String connectionURL = "jdbc:mysql://localhost:3306/descfilm";
 			rs=st.executeQuery("SELECT password FROM `user` WHERE user_id ="+id); 
 			rs.next();
 			String pass=rs.getString(1);
-			if(oldpass==pass) {
+			if(oldpass.equals(pass)) {
 				pstmt = con.prepareStatement("UPDATE `user` SET `password` =? WHERE `user_id`="+id);
 				pstmt.setString(1, newpass);
-				getServletContext().getRequestDispatcher("/edit.jsp").forward(request, resp);
+				pstmt.executeUpdate();
+				getServletContext().getRequestDispatcher("/myprofile.jsp").forward(request, resp);
 			}else {
-				getServletContext().getRequestDispatcher("/edit.jsp").forward(request, resp);
+				getServletContext().getRequestDispatcher("/changepass.jsp?error=1").forward(request, resp);
 			}
 		} catch (SQLException e1) {
 			// TODO Auto-generated catch block

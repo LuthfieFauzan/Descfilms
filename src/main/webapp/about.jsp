@@ -25,7 +25,6 @@
                         <div class="col-lg-6 mb-5">
                             <h2 style="color: white;">Our Base</h2><hr/>
                            
-                            <iframe width="100%" height="400px" frameborder="0" style="border:0" src="https://www.google.com/maps/embed/v1/place?key=AIzaSyCBxS680K7oSbq5Qbh9_dNhWKy7FKXgEOg&q=Asia+e+university" donotallowfullscreen></iframe>
                         </div>
                         <div class="col-lg-6">
                             <form name="userForm" action="feedback" method="post" onsubmit="return confirm('Confirm?');"  novalidate="novalidate">
